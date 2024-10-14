@@ -1,41 +1,32 @@
-name: run main.py
+name: Run Python script daily
 
 on:
   schedule:
     - cron: '*/5 * * * *' # Щодня о 5:30 AM
 
 jobs:
-  build:
+  run_script:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3 # Оновлено до v3
 
-      - name: checkout repo content
-        uses: actions/checkout@v2 # checkout the repository content to github runner
-
-      - name: setup python
-        uses: actions/setup-python@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4 # Оновлено до v4
         with:
-          python-version: '3.9' # install the python version needed
-          
-      - name: install python packages
+          python-version: '3.9' # Вкажіть версію Python
+
+      - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install lxml # Якщо є залежності
-          
-      - name: execute py script # run main.py
-        env:
-          SOME_SECRET: ${{ secrets.SOME_SECRET }}
+
+      - name: Run script
         run: python main.py
-          
-      - name: commit files
+
+      - name: Commit changes
         run: |
+          git config --local user.name "GitHub Actions"
           git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add -A
-          git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
-          
-      - name: push changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main 
+          git add import5.xml
+          git commit -m "Автоматичний коміт з Python" || echo "Nothing to commit"
+          git push origin main
