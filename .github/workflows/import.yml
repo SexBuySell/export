@@ -1,9 +1,9 @@
 name: run
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Додатково: дозволяє запускати вручну з інтерфейсу
   schedule:
-    - cron: '*/5 * * * *' # At 00:00 on Monday
+    - cron: '*/5 * * * *' # Щодня о 6:00 ранку UTC
 
 jobs:
   build:
