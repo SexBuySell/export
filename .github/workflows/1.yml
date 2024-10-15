@@ -1,6 +1,7 @@
 name: Run Python script
 
 on:
+  workflow_dispatch: # Позволяет запускать workflow вручную
   push:
     branches:
       - main
