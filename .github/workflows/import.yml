@@ -1,4 +1,4 @@
-name: RUN IMPORT
+name: RUN import
 
 on:
   workflow_dispatch: # Додатково: дозволяє запускати вручну з інтерфейсу
