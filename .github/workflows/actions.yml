@@ -23,19 +23,20 @@ jobs:
           pip install -r requirements.txt
           
       - name: Execute Python script # Run main.py
-        run: python main.py
-          
-      - name: Commit files
+        run: python main.py    
+
+      - name: pull latest changes
+        run: git pull origin main
+
+      - name: commit files
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git diff-index --quiet HEAD || (git commit -a -m "Updated logs" --allow-empty)
-          
-      - name: Push changes
+          git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
+
+      - name: push changes
         uses: ad-m/github-push-action@v0.6.0
         with:
-          github_token: ${{ secrets.MY_GITHUB_TOKEN }} # Use the GitHub token for authentication
-          branch: main # Push changes to the main branch
-
-
+          github_token: ${{ secrets.MY_GITHUB_TOKEN }}
+          branch: main
