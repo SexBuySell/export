@@ -4,7 +4,7 @@ import logging
 
 # Налаштування логування без мілісекунд, вказуємо шлях до логу
 logging.basicConfig(
-    filename='log.log',  # Заміни цей шлях на потрібний
+    filename='script_log.log',  # Заміни цей шлях на потрібний
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'  # Формат без мілісекунд
