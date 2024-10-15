@@ -23,8 +23,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           
-      - name: Execute Python script # Run main.py
+      - name: Execute Python script # Run export.py
         run: python export.py    
+
+      - name: Check import.xml content # New step to check the content of import.xml
+        run: cat import.xml
 
       - name: Pull latest changes
         run: git pull origin main
@@ -35,6 +38,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git add -A
           git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
+
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0 # Check for a newer version
         with:
