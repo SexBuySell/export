@@ -36,7 +36,7 @@ jobs:
           git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
 
       - name: Push changes
-        uses: ad-m/github-push-action@latest # Replace with latest version if available
+        uses: ad-m/github-push-action@v0.8.0 # Replace with latest version if available
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }} # Use a GitHub token
           branch: main
