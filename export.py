@@ -1,15 +1,5 @@
 import urllib.request
 import lxml.etree as ET
-import logging
-
-
-# Налаштування логування без мілісекунд, вказуємо шлях до логу
-logging.basicConfig(
-    filename='script_log.log',  # Заміни цей шлях на потрібний
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'  # Формат без мілісекунд
-)
 
 # URL прайс-листу
 url = "https://smtm.com.ua/_prices/import-retail-2.xml"
@@ -34,12 +24,10 @@ try:
                 offer.getparent().remove(offer)
 
         # Запишемо оновлений XML у файл
-        with open('import.xml', 'wb') as new_price_list:
-            new_price_list.write('<?xml version="1.0" encoding="UTF-8"?>\n'.encode('utf-8'))
-            new_price_list.write(ET.tostring(root, encoding='utf-8'))
-
-        logging.info('Скрипт виконано успішно')
+        with open('import.xml', 'wb') as file:
+            file.write('<?xml version="1.0" encoding="UTF-8"?>\n'.encode('utf-8'))
+            file.write(ET.tostring(root, encoding='utf-8'))
     else:
-        logging.error(f'Помилка при завантаженні: {response.status}')
+        print(f'Помилка при завантаженні: {response.status}')
 except Exception as e:
-    logging.error(f'Помилка: {e}')
+    print(f'Помилка: {e}')
