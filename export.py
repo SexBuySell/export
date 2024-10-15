@@ -3,15 +3,16 @@ import lxml.etree as ET
 import logging
 import os
 
-# Задаємо шлях до лог-файлу, використовуючи змінну GITHUB_WORKSPACE
-log_file_path = os.path.join(os.getenv('GITHUB_WORKSPACE', '.'), 'script_log.log')
+# Отримуємо поточну робочу директорію з $GITHUB_WORKSPACE
+workspace = os.getenv('GITHUB_WORKSPACE', '.')
 
-# Налаштування логування без мілісекунд
+# Налаштування логування без мілісекунд, вказуємо шлях до логу
+log_file_path = os.path.join(workspace, 'script_log.log')
 logging.basicConfig(
-    filename=log_file_path,  # Лог-файл у робочій директорії GitHub
+    filename=log_file_path,
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
+    datefmt='%Y-%m-%d %H:%M:%S'  # Формат без мілісекунд
 )
 
 # URL прайс-листу
@@ -28,10 +29,7 @@ try:
         root = ET.fromstring(content)
 
         # Список категорій, які потрібно видалити
-        categories_to_delete = ['6533', '6534', '6535', '4848', '4917', '2621', '4799', '4801', '10', '5467', '4860', 
-                                '4898', '4899', '4900', '4901', '7029', '9698', '4866', '4870', '4882', '4883', '4893', 
-                                '4894', '4906', '4902', '4903', '4904', '4905', '5461', '8203', '5302', '4794', '4797', 
-                                '8181', '15080', '17831', '9495', '9496', '4878', '4880', '2316']
+        categories_to_delete = ['6533', '6534', '6535', '4848', '4917', '2621', '4799', '4801', '10', '5467', '4860', '4898', '4899', '4900', '4901', '7029', '9698', '4866', '4870', '4882', '4883', '4893', '4894', '4906', '4902', '4903', '4904', '4905', '5461', '8203', '5302', '4794', '4797', '8181', '15080', '17831', '9495', '9496', '4878', '4880', '2316']
 
         # Пройдемося по кожному <offer> елементу і видалимо його, якщо категорія в списку categories_to_delete
         for offer in root.xpath('//offer'):
@@ -39,8 +37,8 @@ try:
             if category_element is not None and category_element.text in categories_to_delete:
                 offer.getparent().remove(offer)
 
-        # Запишемо оновлений XML у файл у робочій директорії GitHub
-        output_file_path = os.path.join(os.getenv('GITHUB_WORKSPACE', '.'), 'import.xml')
+        # Запишемо оновлений XML у файл
+        output_file_path = os.path.join(workspace, 'import.xml')
         with open(output_file_path, 'wb') as new_price_list:
             new_price_list.write('<?xml version="1.0" encoding="UTF-8"?>\n'.encode('utf-8'))
             new_price_list.write(ET.tostring(root, encoding='utf-8'))
