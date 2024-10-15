@@ -1,7 +1,6 @@
 import urllib.request
 import lxml.etree as ET
 import logging
-from datetime import datetime
 
 # Налаштування логування без мілісекунд, вказуємо шлях до логу
 logging.basicConfig(
