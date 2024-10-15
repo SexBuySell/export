@@ -1,5 +1,15 @@
 import urllib.request
 import lxml.etree as ET
+import logging
+import os
+
+# Налаштування логування
+logging.basicConfig(
+    filename='script_log.log',  
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 
 # URL прайс-листу
 url = "https://smtm.com.ua/_prices/import-retail-2.xml"
@@ -15,7 +25,7 @@ try:
         root = ET.fromstring(content)
 
         # Список категорій, які потрібно видалити
-        categories_to_delete = ['6533', '6534', '6535', '4848', '4917', '2621', '4799', '4801', '10', '5467', '4860', '4898', '4899', '4900', '4901', '7029', '9698', '4866', '4870', '4882', '4883', '4893', '4894', '4906', '4902', '4903', '4904', '4905', '5461', '8203', '5302', '4794', '4797', '8181', '15080', '17831', '9495', '9496', '4878', '4880', '2316']
+        categories_to_delete = [...]  # твої категорії
 
         # Пройдемося по кожному <offer> елементу і видалимо його, якщо категорія в списку categories_to_delete
         for offer in root.xpath('//offer'):
@@ -27,7 +37,12 @@ try:
         with open('import.xml', 'wb') as file:
             file.write('<?xml version="1.0" encoding="UTF-8"?>\n'.encode('utf-8'))
             file.write(ET.tostring(root, encoding='utf-8'))
+
+        logging.info('Скрипт виконано успішно')
+        
+        # Додано: перевірка змісту файлу
+        logging.info(f'Файл import.xml перезаписано. Вміст:\n{ET.tostring(root, encoding="utf-8").decode("utf-8")}')
     else:
-        print(f'Помилка при завантаженні: {response.status}')
+        logging.error(f'Помилка при завантаженні: {response.status}')
 except Exception as e:
-    print(f'Помилка: {e}')
+    logging.error(f'Помилка: {e}')
