@@ -23,11 +23,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           
-      - name: Execute Python script # Run export.py
+      - name: Execute Python script # Run main.py
         run: python export.py    
 
-      - name: Show log file
-        run: cat script_log.log  # Вивід лог файлу script_log.log
+      - name: Display log file content
+        run: cat script_log.log # Виводимо вміст log-файлу на консоль
 
       - name: Pull latest changes
         run: git pull origin main
@@ -38,7 +38,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git add -A
           git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
-
+      
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0 # Check for a newer version
         with:
