@@ -38,5 +38,5 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0 # Check for a newer version
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }} # or ${ { secrets.MY_GITHUB_TOKEN }} if using a custom token
+          github_token: ${{ secrets.MY_GITHUB_TOKEN }} # or ${ { secrets.MY_GITHUB_TOKEN }} if using a custom token
           branch: main
