@@ -1,4 +1,4 @@
-name: Run export.py
+name: RUN export.py
 
 on:
   workflow_dispatch: # Позволяет запускать workflow вручную
