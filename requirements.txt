@@ -1,3 +1,4 @@
 lxml
 urllib3
 logging
+os
