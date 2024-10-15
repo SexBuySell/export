@@ -10,10 +10,10 @@ jobs:
     steps:
 
       - name: Checkout repo content
-        uses: actions/checkout@v3 # Checkout the repository content to GitHub runner
+        uses: actions/checkout@v3 # Ensure you are using the latest version
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v4 # Ensure you are using the latest version
         with:
           python-version: '3.9' # Install the Python version needed
           
@@ -26,7 +26,7 @@ jobs:
         run: python main.py    
 
       - name: Pull latest changes
-        run: git pull origin main || true # Use `|| true` to ignore errors if there are no changes to pull
+        run: git pull origin main
 
       - name: Commit files
         run: |
@@ -36,7 +36,7 @@ jobs:
           git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
 
       - name: Push changes
-        uses: ad-m/github-push-action@v0.6.0
+        uses: ad-m/github-push-action@v0.6.0 # Check for a newer version
         with:
-          github_token: ${{ secrets.MY_GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }} # or ${ { secrets.MY_GITHUB_TOKEN }} if using a custom token
           branch: main
