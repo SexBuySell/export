@@ -1,10 +1,9 @@
-name: Run Python script
+name: RUN export.py
 
 on:
   workflow_dispatch: # Позволяет запускать workflow вручную
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: '*/5 * * * *' # At 00:00 on Monday
 
 jobs:
   build:
@@ -13,27 +12,26 @@ jobs:
       - name: Checkout repo content
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-
-      - name: Install dependencies
+          
+      - name: Install Python packages
         run: |
           python -m pip install --upgrade pip
-          pip install lxml
+          pip install -r requirements.txt
+          
+      - name: Execute Python script
+        run: python export.py    
 
-      - name: Run the Python script
-        run: python export.py
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
 
-      - name: Upload log file as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: script_log
-          path: script_log.log
-
-      - name: Upload XML file as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: import_file
-          path: import.xml
+      - name: Push changes with fallback token
+        run: |
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/SexBuySell/export.git main || git push https://x-access-token:${{ secrets.MY_GITHUB_TOKEN }}@github.com/SexBuySell/export.git main
