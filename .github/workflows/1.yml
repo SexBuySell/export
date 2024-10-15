@@ -26,8 +26,8 @@ jobs:
       - name: Execute Python script # Run export.py
         run: python export.py    
 
-      - name: Check import.xml content # New step to check the content of import.xml
-        run: cat import.xml
+      - name: Show log file
+        run: cat script_log.log  # Вивід лог файлу script_log.log
 
       - name: Pull latest changes
         run: git pull origin main
