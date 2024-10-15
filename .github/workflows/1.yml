@@ -1,6 +1,7 @@
 name: Run main.py
 
 on:
+  workflow_dispatch: # Позволяет запускать workflow вручную
   schedule:
     - cron: '*/5 * * * *' # At 00:00 on Monday
 
