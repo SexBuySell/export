@@ -3,7 +3,7 @@ name: RUN import
 on:
   workflow_dispatch: # Додатково: дозволяє запускати вручну з інтерфейсу
   schedule:
-    - cron: '* 6 * * *' # Щодня о 6:00 ранку UTC
+    - cron: '45 2 * * *' # Щодня о 5:45 ранку UTC+3
 
 jobs:
   build:
