@@ -1,0 +1,48 @@
+name: RUN import
+
+on:
+  workflow_dispatch: # Додатково: дозволяє запускати вручну з інтерфейсу
+  schedule:
+    - cron: '45 2 * * *' # Щодня о 2:45 ранку UTC, а якщо UTC+3 - це буде 5:45 ранку   
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout repo content
+        uses: actions/checkout@v3 # Ensure you are using the latest version
+
+      - name: Setup Python
+        uses: actions/setup-python@v4 # Ensure you are using the latest version
+        with:
+          python-version: '3.9' # Install the Python version needed
+          
+      - name: Install Python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          
+      - name: Execute Python script # Run main.py
+        env:
+          DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }} # Використовуйте секрет тут
+        run: python dropbox_import.py    
+
+      - name: Display log file content
+        run: cat log.txt # Виводимо вміст лог-файлу на консоль
+
+      - name: Pull latest changes
+        run: git pull origin main
+
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
+      
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0 # Check for a newer version
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }} # or ${ { secrets.MY_GITHUB_TOKEN }} if using a custom token
+          branch: main
