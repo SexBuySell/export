@@ -29,13 +29,13 @@ jobs:
         run: python export.py    
 
       - name: Display log file content
-        run: cat script_log.log # Виводимо вміст log-файлу на консоль
+        run: cat script_log.log # Виводимо вміст лог-файлу на консоль
 
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add script_log.log import.xml  # Додати нові файли до Git
+          git add -f script_log.log import.xml  # Примусово додати нові файли до Git
           git diff-index --quiet HEAD || (git commit -m "Оновлення лог-файлу та імпортованого XML")
       
       - name: Push changes
