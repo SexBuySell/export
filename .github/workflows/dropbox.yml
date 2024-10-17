@@ -29,7 +29,7 @@ jobs:
         run: python import_dropbox.py    
 
       - name: Display log file content
-        run: cat log.txt # Виводимо вміст лог-файлу на консоль
+        run: cat upload/log.txt # Виводимо вміст лог-файлу на консоль
 
       - name: Pull latest changes
         run: git pull origin main
