@@ -56,7 +56,8 @@ cover/
 *.pot
 
 # Django stuff:
-*.log
+*.log # Залиште цю частину, якщо хочете, щоб всі .log файли були проігноровані, але додайте виключення для конкретного файлу
+!logs/export.log  # Виключаємо export.log з ігнорування
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
