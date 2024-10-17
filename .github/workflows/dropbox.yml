@@ -1,4 +1,4 @@
-name: RUN import
+name: RUN DROPBOX
 
 on:
   workflow_dispatch: # Додатково: дозволяє запускати вручну з інтерфейсу
