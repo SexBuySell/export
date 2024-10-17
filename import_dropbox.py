@@ -8,17 +8,18 @@ from dotenv import load_dotenv
 # Завантажити змінні з .env
 load_dotenv()
 
-# Функція для запису логів
-def write_log(message):
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    log_message = f"{timestamp} - {message}\n"
-    with open('log.txt', 'a') as log_file:
-        log_file.write(log_message)
-
 # Створюємо папку upload, якщо вона не існує
 upload_folder = 'upload'
 if not os.path.exists(upload_folder):
     os.makedirs(upload_folder)
+
+# Функція для запису логів
+def write_log(message):
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    log_message = f"{timestamp} - {message}\n"
+    log_file_path = os.path.join(upload_folder, 'log.txt')  # Зберігаємо log.txt в папці upload
+    with open(log_file_path, 'a') as log_file:
+        log_file.write(log_message)
 
 # URL прайс-листу
 url = "https://smtm.com.ua/_prices/import-retail-2.xml"
@@ -73,5 +74,6 @@ except Exception as e:
     print(error_message)
 
 # Завантаження лог-файлу на Dropbox
-with open('log.txt', 'rb') as log_file:
+log_file_path = os.path.join(upload_folder, 'log.txt')  # Шлях до лог-файлу
+with open(log_file_path, 'rb') as log_file:
     dbx.files_upload(log_file.read(), '/log.txt', mode=dropbox.files.WriteMode.overwrite)
