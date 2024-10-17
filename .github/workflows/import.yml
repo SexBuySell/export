@@ -23,11 +23,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           
-      - name: Execute Python script
-        run: python export.py  # Використовуємо правильний файл
+      - name: Execute Python script # Run main.py
+        run: python export.py    
 
       - name: Display log file content
-        run: cat script_log.log  # Виводимо вміст лог-файлу на консоль
+        run: cat script_log.log # Виводимо вміст log-файлу на консоль
 
       - name: Pull latest changes
         run: git pull origin main
