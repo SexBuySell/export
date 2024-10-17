@@ -4,16 +4,18 @@ import logging
 
 # Налаштування логування без мілісекунд, вказуємо шлях до логу
 logging.basicConfig(
-    filename='script_log.log',  # Заміни цей шлях на потрібний
+    filename='script_log.log',  # Лог-файл зберігається в кореневій директорії
     level=logging.INFO,
     format='%(asctime)s - %(message)s',  # Формат для запису дати, часу та повідомлення
     datefmt='%Y-%m-%d %H:%M:%S'  # Формат без мілісекунд
 )
 
-# URL прайс-листу
-url = "https://smtm.com.ua/_prices/import-retail-2.xml"
-
 try:
+    logging.info('Скрипт запущено.')  # Логування на самому початку
+
+    # URL прайс-листу
+    url = "https://smtm.com.ua/_prices/import-retail-2.xml"
+    
     # Завантаження XML
     response = urllib.request.urlopen(url)
 
@@ -32,12 +34,12 @@ try:
             if category_element is not None and category_element.text in categories_to_delete:
                 offer.getparent().remove(offer)
 
-        # Запишемо оновлений XML у файл
+        # Запишемо оновлений XML у файл в кореневій директорії
         with open('import.xml', 'wb') as file:
             file.write('<?xml version="1.0" encoding="UTF-8"?>\n'.encode('utf-8'))
             file.write(ET.tostring(root, encoding='utf-8'))
 
-        logging.info('Скрипт виконано успішно')  # Запис успішного виконання
+        logging.info('Файл import.xml створено успішно та скрипт виконано.')  # Запис успішного виконання
     else:
         logging.error(f'Помилка при завантаженні: {response.status}')  # Запис помилки завантаження
 except Exception as e:
