@@ -1,4 +1,4 @@
-name: RUN DROPBOX
+name: DROPBOX
 
 on:
   workflow_dispatch: # Додатково: дозволяє запускати вручну з інтерфейсу
@@ -26,7 +26,7 @@ jobs:
       - name: Execute Python script # Run main.py
         env:
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }} # Використовуйте секрет тут
-        run: python dropbox_import.py    
+        run: python dropbox.py    
 
       - name: Display log file content
         run: cat log.txt # Виводимо вміст лог-файлу на консоль
