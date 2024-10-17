@@ -1,21 +1,26 @@
+import os
 import urllib.request
 import lxml.etree as ET
 import logging
 
+# Створимо папку logs, якщо її немає
+if not os.path.exists('logs'):
+    os.makedirs('logs')
+
 # Налаштування логування без мілісекунд, вказуємо шлях до логу
 logging.basicConfig(
-    filename='script_log.log',  # Лог-файл зберігається в кореневій директорії
+    filename='logs/script_log.log',  # Замість кореневого каталогу використовуємо папку logs
     level=logging.INFO,
     format='%(asctime)s - %(message)s',  # Формат для запису дати, часу та повідомлення
     datefmt='%Y-%m-%d %H:%M:%S'  # Формат без мілісекунд
 )
 
-try:
-    logging.info('Скрипт запущено.')  # Логування на самому початку
+logging.info('Скрипт почав виконуватись')  # Лог запису про початок виконання скрипту
 
-    # URL прайс-листу
-    url = "https://smtm.com.ua/_prices/import-retail-2.xml"
-    
+# URL прайс-листу
+url = "https://smtm.com.ua/_prices/import-retail-2.xml"
+
+try:
     # Завантаження XML
     response = urllib.request.urlopen(url)
 
@@ -34,13 +39,14 @@ try:
             if category_element is not None and category_element.text in categories_to_delete:
                 offer.getparent().remove(offer)
 
-        # Запишемо оновлений XML у файл в кореневій директорії
+        # Запишемо оновлений XML у файл
         with open('import.xml', 'wb') as file:
             file.write('<?xml version="1.0" encoding="UTF-8"?>\n'.encode('utf-8'))
             file.write(ET.tostring(root, encoding='utf-8'))
 
-        logging.info('Файл import.xml створено успішно та скрипт виконано.')  # Запис успішного виконання
+        logging.info('Скрипт виконано успішно')  # Запис успішного виконання
     else:
         logging.error(f'Помилка при завантаженні: {response.status}')  # Запис помилки завантаження
 except Exception as e:
     logging.error(f'Помилка: {e}')  # Запис будь-якої іншої помилки
+    raise  # Виводимо помилку і завершуємо процес
