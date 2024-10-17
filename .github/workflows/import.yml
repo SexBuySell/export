@@ -29,6 +29,9 @@ jobs:
       - name: Display log file content
         run: cat logs/export.log # Виводимо вміст лог-файлу на консоль
 
+      - name: Stash any unstaged changes
+        run: git stash || echo "No changes to stash"
+
       - name: Pull latest changes
         run: git pull --rebase origin main
 
